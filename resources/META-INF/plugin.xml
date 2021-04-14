@@ -1,0 +1,43 @@
+<idea-plugin require-restart="true">
+    <id>com.logmark.cron.tools.id</id>
+    <name>Mark Cron Tools</name>
+    <version>1.1</version>
+    <vendor email="1326558150@qq.com" url="https://gitee.com/heliangbin/mark-plugins-tools">logmark</vendor>
+
+    <description><![CDATA[
+        The plug-in is an off-line tool to solve some expressions needed in the development process.<br>
+        <em>For example: cron expression.</em>
+        ]]></description>
+
+    <change-notes><![CDATA[
+        This is the first version of the plug-in development, the follow-up will continue to develop and maintain.<br>
+        <em>Follow up functions to be developed, enjoy looking forward to...</em>
+        ]]>
+  </change-notes>
+
+    <!-- 插件兼容IDEA build 版本号-->
+    <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+    <idea-version since-build="173.0"/>
+
+    <!-- 插件所依赖的其他插件的id -->
+    <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+
+    <!-- 声明该插件对IDEA core或其他插件的扩展 -->
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+    </extensions>
+
+    <!-- 编写插件动作 -->
+    <actions>
+        <!-- Add your actions here -->
+        <action id="cron_action_service_id" class="com.logmark.crontools.cron.CronActionService" text="Cron Expression Generation"
+                description="Custom generated cron expression">
+            <add-to-group group-id="EditorPopupMenu" anchor="before" relative-to-action="FoldingGroup"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl alt Q"/>
+
+        </action>
+    </actions>
+
+</idea-plugin>
