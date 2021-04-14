@@ -7,13 +7,14 @@
     <description><![CDATA[
         The plug-in is an off-line tool to solve some expressions needed in the development process.<br>
         <em>For example: cron expression.</em>
-        ]]></description>
+        ]]>
+    </description>
 
     <change-notes><![CDATA[
         This is the first version of the plug-in development, the follow-up will continue to develop and maintain.<br>
         <em>Follow up functions to be developed, enjoy looking forward to...</em>
         ]]>
-  </change-notes>
+    </change-notes>
 
     <!-- 插件兼容IDEA build 版本号-->
     <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
@@ -32,7 +33,8 @@
     <!-- 编写插件动作 -->
     <actions>
         <!-- Add your actions here -->
-        <action id="cron_action_service_id" class="com.logmark.crontools.cron.CronActionService" text="Cron Expression Generation"
+        <action id="cron_action_service_id" class="com.logmark.crontools.cron.CronActionService"
+                text="Cron Expression Generation"
                 description="Custom generated cron expression">
             <add-to-group group-id="EditorPopupMenu" anchor="before" relative-to-action="FoldingGroup"/>
             <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl alt Q"/>
