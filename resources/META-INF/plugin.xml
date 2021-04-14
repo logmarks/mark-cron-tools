@@ -38,7 +38,6 @@
                 description="Custom generated cron expression">
             <add-to-group group-id="ToolsMenu" anchor="after" relative-to-action="ToolsBasicGroup"/>
             <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl alt Q"/>
-
         </action>
     </actions>
 
