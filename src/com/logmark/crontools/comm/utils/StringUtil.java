@@ -3,6 +3,7 @@ package com.logmark.crontools.comm.utils;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.awt.*;
+import java.lang.reflect.Array;
 
 /**
  * @FileName: StringUtil
@@ -61,7 +62,7 @@ public class StringUtil {
     }
 
     public static boolean isAnyBlank(CharSequence... css) {
-        if (ArrayUtils.isEmpty(css)) {
+        if (getLength(css) == 0) {
             return false;
         } else {
             CharSequence[] var1 = css;
@@ -76,5 +77,9 @@ public class StringUtil {
 
             return false;
         }
+    }
+
+    public static int getLength(Object array) {
+        return array == null ? 0 : Array.getLength(array);
     }
 }
