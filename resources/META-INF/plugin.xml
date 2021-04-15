@@ -1,12 +1,15 @@
 <idea-plugin require-restart="true">
     <id>com.logmark.cron.tools.id</id>
     <name>Mark Cron Tools</name>
-    <version>1.1</version>
+    <version>1.1-2021.4.15</version>
     <vendor email="1326558150@qq.com" url="https://gitee.com/heliangbin/mark-plugins-tools">logmark</vendor>
 
     <description><![CDATA[
         The plug-in is an off-line tool to solve some expressions needed in the development process.<br>
-        <em>For example: cron expression.</em>
+        <em>For example: cron expression.</em><br>
+        You can find "Cron Expression Generation" under the Tools menu bar and click this option <br>
+        or select the "ctrl+shift+alt+Q" shortcut to pop up the cron expression generation interface.<br>
+        Then you can generate a Cron expression based on the time, minute, and second of the year, month, day you choose.
         ]]>
     </description>
 
