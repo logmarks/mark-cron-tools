@@ -1,27 +1,14 @@
 # mark-cron-tools
 
-#### Description
-idea cron表达式插件
+####Introduction
+    Idea cron expression plugin
+####Software architecture
+    Software architecture description
+####Installation tutorial
+    Search for "idea cron tools" in the plug-in library
+        1. Click Install to install "idea cron tools"
+        2. Click "cron expression generation" in the tools menu bar 
+        or click "Ctrl + Shift + Alt + Q" to open the cron expression generation interface.
 
-#### Software Architecture
-Software architecture description
 
-#### Installation
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### Instructions
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### Contribution
-
-1.  Fork the repository
-2.  Create Feat_xxx branch
-3.  Commit your code
-4.  Create Pull Request
 

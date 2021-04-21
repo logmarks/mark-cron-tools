@@ -1,28 +1,13 @@
 # mark-cron-tools
 
 #### 介绍
-idea cron表达式插件
-
+    idea cron表达式插件
 #### 软件架构
-软件架构说明
-
-
+    软件架构说明
 #### 安装教程
+    在插件库中搜索 “idea-Cron-Toools” 
+        1.点击安装，即可安装 “idea-cron-tools”;
+        2.点击 Tools 菜单栏 选择 “Cron Expression Generation”按钮
+        或者 点击“ctrl + shift + alt + Q”快捷键，即可打开 cron表达式生成界面
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 使用说明
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 参与贡献
-
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
 
