@@ -392,12 +392,12 @@ public abstract class CronPageStructure {
         return null;
     }
 
-    /**
-     * 输入框数据值处理  结果数据显示
-     *
-     * @return
-     */
-    public abstract void setUpTextField(JTextField textField);
+//    /**
+//     * 输入框数据值处理  结果数据显示
+//     *
+//     * @return
+//     */
+//    public abstract void setUpTextField(JTextField textField);
 
 
 }

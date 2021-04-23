@@ -29,11 +29,6 @@ public class CronYearPageStructure extends CronPageStructure {
     }
 
     @Override
-    public void setUpTextField(JTextField textField) {
-
-    }
-
-    @Override
     public JPanel getTopForm() {
         // 表达式之上 上部分
         JPanel expressionTopForm = new JPanel();

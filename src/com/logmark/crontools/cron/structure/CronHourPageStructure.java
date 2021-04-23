@@ -32,11 +32,6 @@ public class CronHourPageStructure extends CronPageStructure {
     }
 
     @Override
-    public void setUpTextField(JTextField textField) {
-
-    }
-
-    @Override
     public JPanel getTopForm() {
 
         JPanel expressionTopForm = new JPanel();

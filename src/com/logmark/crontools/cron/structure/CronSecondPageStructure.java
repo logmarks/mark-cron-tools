@@ -31,12 +31,6 @@ public class CronSecondPageStructure extends CronPageStructure {
                 ExpressionBo.BACKSLASH.equals(expressionChar) ? checkBackslashExpression() : null;
     }
 
-
-    @Override
-    public void setUpTextField(JTextField textField) {
-
-    }
-
     @Override
     public JPanel getTopForm() {
         // 表达式之上 上部分
