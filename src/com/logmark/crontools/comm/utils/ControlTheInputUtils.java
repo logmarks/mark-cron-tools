@@ -15,12 +15,12 @@ public class ControlTheInputUtils extends KeyAdapter {
     private Integer maxValue;
 
     public ControlTheInputUtils() {
-        this.minValue = 1;
+        this.minValue = 0;
         this.maxValue = 60;
     }
 
     public ControlTheInputUtils(Integer minValue, Integer maxValue) {
-        this.minValue = minValue == null ? 1 : minValue;
+        this.minValue = minValue == null ? 0 : minValue;
         this.maxValue = maxValue == null ? 60 : maxValue;
     }
 
