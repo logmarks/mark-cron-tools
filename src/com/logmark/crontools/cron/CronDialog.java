@@ -5,7 +5,7 @@ import com.intellij.ui.components.JBScrollPane;
 import com.logmark.crontools.comm.utils.GridLayoutUtils;
 import com.logmark.crontools.cron.bo.ExpressionBo;
 import com.logmark.crontools.cron.enums.DateUnitEnum;
-import com.logmark.crontools.cron.structure.CronPageStructure;
+import com.logmark.crontools.cron.structure.*;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -47,10 +47,7 @@ public class CronDialog extends DialogWrapper {
         this.cardsTopForm = new JPanel(this.cardLayout);
         this.expressionBo = new ExpressionBo();
         this.expressionBottomForm = getBottomForm();
-        for (DateUnitEnum page : DateUnitEnum.values()) {
-            this.pageStructureMap.put(page, CronPageStructure.getInstance(page, this.expressionBo, this.cardLayout, this.cardsTopForm));
-        }
-        CronDialog.pageMap = this.pageStructureMap;
+        this.setMap();
         init();
         setTitle("Cron表达式生成器");
     }
@@ -68,6 +65,39 @@ public class CronDialog extends DialogWrapper {
         contextPanel.add(this.cardsTopForm);
         contextPanel.add(this.expressionBottomForm);
         return contextPanel;
+    }
+
+    private CronDialog setMap() {
+        CronPageStructure secondPage = new CronSecondPageStructure(DateUnitEnum.SECOND
+                , this.expressionBo, this.cardLayout, this.cardsTopForm);
+        this.pageStructureMap.put(DateUnitEnum.SECOND, secondPage);
+
+        CronPageStructure minutePage = new CronMinutePageStructure(DateUnitEnum.MINUTE
+                , this.expressionBo, this.cardLayout, this.cardsTopForm);
+        this.pageStructureMap.put(DateUnitEnum.MINUTE, minutePage);
+
+        CronPageStructure hourPage = new CronHourPageStructure(DateUnitEnum.HOUR
+                , this.expressionBo, this.cardLayout, this.cardsTopForm);
+        this.pageStructureMap.put(DateUnitEnum.HOUR, hourPage);
+
+        CronPageStructure dayPage = new CronDayPageStructure(DateUnitEnum.DAY
+                , this.expressionBo, this.cardLayout, this.cardsTopForm);
+        this.pageStructureMap.put(DateUnitEnum.DAY, dayPage);
+
+        CronPageStructure monthPage = new CronMonthPageStructure(DateUnitEnum.MONTH
+                , this.expressionBo, this.cardLayout, this.cardsTopForm);
+        this.pageStructureMap.put(DateUnitEnum.MONTH, monthPage);
+
+        CronPageStructure weekPage = new CronWeekPageStructure(DateUnitEnum.WEEK
+                , this.expressionBo, this.cardLayout, this.cardsTopForm);
+        this.pageStructureMap.put(DateUnitEnum.WEEK, weekPage);
+
+        CronPageStructure yearPage = new CronYearPageStructure(DateUnitEnum.YEAR
+                , this.expressionBo, this.cardLayout, this.cardsTopForm);
+        this.pageStructureMap.put(DateUnitEnum.YEAR, yearPage);
+
+        CronDialog.pageMap = this.pageStructureMap;
+        return this;
     }
 
     public JPanel getBottomForm() {

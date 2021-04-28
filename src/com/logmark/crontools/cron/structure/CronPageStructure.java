@@ -1,20 +1,18 @@
 package com.logmark.crontools.cron.structure;
 
 
-import com.intellij.ui.JBColor;
 import com.logmark.crontools.comm.listener.button.CycleButtonActionListener;
 import com.logmark.crontools.comm.listener.button.DesignButtonActionListener;
 import com.logmark.crontools.comm.listener.button.TimingPeriodButtonActionListener;
 import com.logmark.crontools.comm.listener.document.TextFieldDocumentListener;
 import com.logmark.crontools.comm.utils.StringUtil;
 import com.logmark.crontools.cron.bo.ExpressionBo;
+import com.logmark.crontools.cron.bo.PageLimitValue;
 import com.logmark.crontools.cron.bo.page.CronFrameBo;
 import com.logmark.crontools.cron.enums.DateUnitEnum;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 /**
  * @FileName: CronPageStructure
@@ -25,11 +23,6 @@ import java.awt.event.MouseEvent;
  */
 public abstract class CronPageStructure {
     private DateUnitEnum dateUnitEnum;
-    /**
-     * 构建选项菜单页面
-     */
-    private JPanel optionsMenu;
-
     /**
      * 构建表达式之上页面
      */
@@ -52,20 +45,24 @@ public abstract class CronPageStructure {
      */
     private JPanel cardsTopForm;
 
+    /**
+     * 页面最大/最小值
+     */
+    private PageLimitValue pageLimitValue;
+
     public CronPageStructure() {
-        this.cardLayout = new CardLayout();
-        this.cardsTopForm = new JPanel(this.cardLayout);
-
     }
 
-    public CronPageStructure(DateUnitEnum dateUnitEnum) {
+    public CronPageStructure(DateUnitEnum unit, ExpressionBo expressionBo
+            , CardLayout cardLayout, JPanel cardsTopForm) {
         this();
-        this.dateUnitEnum = dateUnitEnum;
-    }
-
-    public CronPageStructure(DateUnitEnum unit, ExpressionBo expressionBo) {
-        this(unit);
+        this.dateUnitEnum = unit;
+        this.cardLayout = cardLayout;
+        this.cardsTopForm = cardsTopForm;
         this.expressionBo = expressionBo;
+        this.cronFrameBo = this.getCronFrame();
+        this.expressionTopForm = this.getTopForm(unit);
+        this.setButtonAndTextFieldListener();
     }
 
     public DateUnitEnum getDateUnitEnum() {
@@ -77,12 +74,12 @@ public abstract class CronPageStructure {
         return this;
     }
 
-    public JPanel getOptionsMenu() {
-        return optionsMenu;
+    public PageLimitValue getPageLimitValue() {
+        return pageLimitValue;
     }
 
-    public CronPageStructure setOptionsMenu(JPanel optionsMenu) {
-        this.optionsMenu = optionsMenu;
+    public CronPageStructure setPageLimitValue(PageLimitValue pageLimitValue) {
+        this.pageLimitValue = pageLimitValue;
         return this;
     }
 
@@ -126,146 +123,139 @@ public abstract class CronPageStructure {
         return cronFrameBo;
     }
 
-    public CronPageStructure setCronFrameBo() {
-        this.setCronFrameBo(getCronFrame());
-        return this;
-    }
-
-    protected abstract CronFrameBo getCronFrame();
-
-
     public CronPageStructure setCronFrameBo(CronFrameBo cronFrameBo) {
         this.cronFrameBo = cronFrameBo;
         return this;
     }
 
     // ------------------------------------------- 构造函数 get/set结束线--------------------------------
+//
+//    public JPanel getOptions(DateUnitEnum unitEnum) {
+//        // 窗体选项栏
+//        JPanel optionsMenu = new JPanel();
+//        FlowLayout optionsMenuLayout = new FlowLayout(FlowLayout.LEFT, 1, 5);
+//        JButton secondButton = this.makeButton(DateUnitEnum.SECOND.getContent(), unitEnum);
+//        optionsMenu.add(secondButton, optionsMenuLayout, 0);
+//        JButton minuteButton = this.makeButton(DateUnitEnum.MINUTE.getContent(), unitEnum);
+//        optionsMenu.add(minuteButton, optionsMenuLayout, 1);
+//        JButton hourButton = this.makeButton(DateUnitEnum.HOUR.getContent(), unitEnum);
+//        optionsMenu.add(hourButton, optionsMenuLayout, 2);
+//        JButton dayButton = this.makeButton(DateUnitEnum.DAY.getContent(), unitEnum);
+//        optionsMenu.add(dayButton, optionsMenuLayout, 3);
+//        JButton monthButton = this.makeButton(DateUnitEnum.MONTH.getContent(), unitEnum);
+//        optionsMenu.add(monthButton, optionsMenuLayout, 4);
+//        JButton weekButton = this.makeButton(DateUnitEnum.WEEK.getContent(), unitEnum);
+//        optionsMenu.add(weekButton, optionsMenuLayout, 5);
+//        JButton yearButton = this.makeButton(DateUnitEnum.YEAR.getContent(), unitEnum);
+//        optionsMenu.add(yearButton, optionsMenuLayout, 6);
+//        return optionsMenu;
+//    }
+//
+//    private JButton makeButton(String name, DateUnitEnum unitEnum) {
+//        JButton jButton = new JButton(name);
+//        jButton.setContentAreaFilled(true);
+//        jButton.setBackground(unitEnum.getContent().equals(name) ? JBColor.LIGHT_GRAY : JBColor.WHITE);
+//        jButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+//        // 对按钮添加鼠标活动
+//        jButton.addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mouseEntered(MouseEvent e) {
+//                jButton.setBackground(JBColor.LIGHT_GRAY);
+//            }
+//
+//            @Override
+//            public void mouseExited(MouseEvent e) {
+//                jButton.setBackground(JBColor.WHITE);
+//            }
+//
+//            @Override
+//            public void mouseClicked(MouseEvent e) {
+//                jButton.setBackground(JBColor.GRAY);
+//                DateUnitEnum unitEnum = DateUnitEnum.getByContent(jButton.getText());
+//                cardLayout.show(cardsTopForm, unitEnum.getValue());
+//            }
+//        });
+//        jButton.setBorderPainted(false);
+//        return jButton;
+//    }
+//
 
-    public JPanel getOptions(DateUnitEnum unitEnum) {
-        // 窗体选项栏
-        JPanel optionsMenu = new JPanel();
-        FlowLayout optionsMenuLayout = new FlowLayout(FlowLayout.LEFT, 1, 5);
-        JButton secondButton = this.makeButton(DateUnitEnum.SECOND.getContent(), unitEnum);
-        optionsMenu.add(secondButton, optionsMenuLayout, 0);
-        JButton minuteButton = this.makeButton(DateUnitEnum.MINUTE.getContent(), unitEnum);
-        optionsMenu.add(minuteButton, optionsMenuLayout, 1);
-        JButton hourButton = this.makeButton(DateUnitEnum.HOUR.getContent(), unitEnum);
-        optionsMenu.add(hourButton, optionsMenuLayout, 2);
-        JButton dayButton = this.makeButton(DateUnitEnum.DAY.getContent(), unitEnum);
-        optionsMenu.add(dayButton, optionsMenuLayout, 3);
-        JButton monthButton = this.makeButton(DateUnitEnum.MONTH.getContent(), unitEnum);
-        optionsMenu.add(monthButton, optionsMenuLayout, 4);
-        JButton weekButton = this.makeButton(DateUnitEnum.WEEK.getContent(), unitEnum);
-        optionsMenu.add(weekButton, optionsMenuLayout, 5);
-        JButton yearButton = this.makeButton(DateUnitEnum.YEAR.getContent(), unitEnum);
-        optionsMenu.add(yearButton, optionsMenuLayout, 6);
-        return optionsMenu;
-    }
-
-    private JButton makeButton(String name, DateUnitEnum unitEnum) {
-        JButton jButton = new JButton(name);
-        jButton.setContentAreaFilled(true);
-        jButton.setBackground(unitEnum.getContent().equals(name) ? JBColor.LIGHT_GRAY : JBColor.WHITE);
-        jButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        // 对按钮添加鼠标活动
-        jButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                jButton.setBackground(JBColor.LIGHT_GRAY);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                jButton.setBackground(JBColor.WHITE);
-            }
-
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                jButton.setBackground(JBColor.GRAY);
-                DateUnitEnum unitEnum = DateUnitEnum.getByContent(jButton.getText());
-                cardLayout.show(cardsTopForm, unitEnum.getValue());
-            }
-        });
-        jButton.setBorderPainted(false);
-        return jButton;
-    }
+    /**
+     * @return
+     */
+    abstract CronFrameBo getCronFrame();
 
     /**
      * 获取表达式之上的页面
      *
+     * @param page
      * @return
      */
-    abstract JPanel getTopForm();
+    abstract JPanel getTopForm(DateUnitEnum page);
 
-    protected CronPageStructure setTopForm() {
-        JPanel topForm = this.getTopForm();
-        this.setExpressionTopForm(topForm);
-        return this;
-    }
-
-    /**
-     * 获取当前页面实例
-     *
-     * @return
-     */
-    public static CronPageStructure getInstance(DateUnitEnum page, ExpressionBo expressionBo, CardLayout cardLayout, JPanel cardsTopForm) {
-        CronPageStructure pageStructure = null;
-        switch (page) {
-            case MINUTE:
-                pageStructure = new CronMinutePageStructure();
-                pageStructure.setExpressionBo(expressionBo).setCronFrameBo()
-                        .setDateUnitEnum(page).setCardLayout(cardLayout).setCardsTopForm(cardsTopForm)
-                        .setTopForm().setButtonAndTextFieldListener(expressionBo.getMinuteTextField());
-                break;
-            case HOUR:
-                pageStructure = new CronHourPageStructure();
-                expressionBo.setCurrentUnitMinValue(0).setCurrentUnitMaxValue(23);
-                pageStructure.setExpressionBo(expressionBo).setCronFrameBo()
-                        .setDateUnitEnum(page).setCardLayout(cardLayout).setCardsTopForm(cardsTopForm)
-                        .setTopForm().setButtonAndTextFieldListener(expressionBo.getHourTextField());
-                break;
-            case DAY:
-                pageStructure = new CronDayPageStructure();
-                expressionBo.setCurrentUnitMinValue(1).setCurrentUnitMaxValue(31);
-                pageStructure.setExpressionBo(expressionBo).setCronFrameBo()
-                        .setDateUnitEnum(page).setCardLayout(cardLayout).setCardsTopForm(cardsTopForm)
-                        .setTopForm().setButtonAndTextFieldListener(expressionBo.getDayTextField());
-                break;
-            case MONTH:
-                pageStructure = new CronMonthPageStructure();
-                expressionBo.setCurrentUnitMinValue(1).setCurrentUnitMaxValue(12);
-                pageStructure.setExpressionBo(expressionBo).setCronFrameBo()
-                        .setDateUnitEnum(page).setCardLayout(cardLayout).setCardsTopForm(cardsTopForm)
-                        .setTopForm().setButtonAndTextFieldListener(expressionBo.getMonthTextField());
-                break;
-            case WEEK:
-                pageStructure = new CronWeekPageStructure();
-                expressionBo.setCurrentUnitMinValue(1).setCurrentUnitMaxValue(7);
-                pageStructure.setExpressionBo(expressionBo).setCronFrameBo()
-                        .setDateUnitEnum(page).setCardLayout(cardLayout).setCardsTopForm(cardsTopForm)
-                        .setTopForm().setButtonAndTextFieldListener(expressionBo.getWeekTextField());
-                break;
-            case YEAR:
-                pageStructure = new CronYearPageStructure();
-                expressionBo.setCurrentUnitMinValue(2020).setCurrentUnitMaxValue(3000);
-                pageStructure.setExpressionBo(expressionBo).setCronFrameBo()
-                        .setDateUnitEnum(page).setCardLayout(cardLayout).setCardsTopForm(cardsTopForm)
-                        .setTopForm().setButtonAndTextFieldListener(expressionBo.getYearTextField());
-                break;
-            default:
-                pageStructure = new CronSecondPageStructure();
-                pageStructure.setExpressionBo(expressionBo).setCronFrameBo()
-                        .setDateUnitEnum(page).setCardLayout(cardLayout).setCardsTopForm(cardsTopForm)
-                        .setTopForm().setButtonAndTextFieldListener(expressionBo.getSecondTextField());
-                break;
-        }
-        return pageStructure;
-    }
+//    /**
+//     * 获取当前页面实例
+//     *
+//     * @return
+//     */
+//    public static CronPageStructure getInstance(DateUnitEnum page, ExpressionBo expressionBo, CardLayout cardLayout, JPanel cardsTopForm) {
+//        CronPageStructure pageStructure = null;
+//        switch (page) {
+//            case MINUTE:
+//                pageStructure = new CronMinutePageStructure();
+//                pageStructure.setExpressionBo(expressionBo).setCronFrameBo()
+//                        .setDateUnitEnum(page).setCardLayout(cardLayout).setCardsTopForm(cardsTopForm)
+//                        .setButtonAndTextFieldListener(expressionBo.getMinuteTextField());
+//                break;
+//            case HOUR:
+//                pageStructure = new CronHourPageStructure();
+//                expressionBo.setCurrentUnitMinValue(0).setCurrentUnitMaxValue(23);
+//                pageStructure.setExpressionBo(expressionBo).setCronFrameBo()
+//                        .setDateUnitEnum(page).setCardLayout(cardLayout).setCardsTopForm(cardsTopForm)
+//                        .setButtonAndTextFieldListener(expressionBo.getHourTextField());
+//                break;
+//            case DAY:
+//                pageStructure = new CronDayPageStructure();
+//                expressionBo.setCurrentUnitMinValue(1).setCurrentUnitMaxValue(31);
+//                pageStructure.setExpressionBo(expressionBo).setCronFrameBo()
+//                        .setDateUnitEnum(page).setCardLayout(cardLayout).setCardsTopForm(cardsTopForm)
+//                        .setButtonAndTextFieldListener(expressionBo.getDayTextField());
+//                break;
+//            case MONTH:
+//                pageStructure = new CronMonthPageStructure();
+//                expressionBo.setCurrentUnitMinValue(1).setCurrentUnitMaxValue(12);
+//                pageStructure.setExpressionBo(expressionBo).setCronFrameBo()
+//                        .setDateUnitEnum(page).setCardLayout(cardLayout).setCardsTopForm(cardsTopForm)
+//                        .setButtonAndTextFieldListener(expressionBo.getMonthTextField());
+//                break;
+//            case WEEK:
+//                pageStructure = new CronWeekPageStructure();
+//                expressionBo.setCurrentUnitMinValue(1).setCurrentUnitMaxValue(7);
+//                pageStructure.setExpressionBo(expressionBo).setCronFrameBo()
+//                        .setDateUnitEnum(page).setCardLayout(cardLayout).setCardsTopForm(cardsTopForm)
+//                        .setButtonAndTextFieldListener(expressionBo.getWeekTextField());
+//                break;
+//            case YEAR:
+//                pageStructure = new CronYearPageStructure();
+//                expressionBo.setCurrentUnitMinValue(2020).setCurrentUnitMaxValue(3000);
+//                pageStructure.setExpressionBo(expressionBo).setCronFrameBo()
+//                        .setDateUnitEnum(page).setCardLayout(cardLayout).setCardsTopForm(cardsTopForm)
+//                        .setButtonAndTextFieldListener(expressionBo.getYearTextField());
+//                break;
+//            default:
+//                pageStructure = new CronSecondPageStructure();
+//                pageStructure.setExpressionBo(expressionBo).setCronFrameBo()
+//                        .setDateUnitEnum(page).setCardLayout(cardLayout).setCardsTopForm(cardsTopForm)
+//                        .setButtonAndTextFieldListener(expressionBo.getSecondTextField());
+//                break;
+//        }
+//        return pageStructure;
+//    }
 
     /**
      * 监听事件设置方法
      */
-    protected void setButtonAndTextFieldListener(JTextField textField) {
+    public CronPageStructure setButtonAndTextFieldListener(JTextField textField) {
         this.getCronFrameBo().getCycleButton()
                 .addActionListener(
                         new CycleButtonActionListener(this.getExpressionBo(), this.getCronFrameBo(), textField));
@@ -273,12 +263,14 @@ public abstract class CronPageStructure {
         this.getCronFrameBo().getCycleMinValueText().getDocument()
                 .addDocumentListener(new TextFieldDocumentListener(this.getExpressionBo(), this.getCronFrameBo().getCycleButton()
                         , ExpressionBo.HORIZONTAL_LINE, textField
-                        , this.getCronFrameBo().getCycleMinValueText(), this.getCronFrameBo().getCycleMaxValueText()));
+                        , this.getCronFrameBo().getCycleMinValueText(), this.getCronFrameBo().getCycleMaxValueText())
+                .setPageLimitValue(this.getPageLimitValue()));
 
         this.getCronFrameBo().getCycleMaxValueText().getDocument()
                 .addDocumentListener(new TextFieldDocumentListener(this.getExpressionBo(), this.getCronFrameBo().getCycleButton()
                         , ExpressionBo.HORIZONTAL_LINE, textField
-                        , this.getCronFrameBo().getCycleMaxValueText(), this.getCronFrameBo().getCycleMinValueText()));
+                        , this.getCronFrameBo().getCycleMaxValueText(), this.getCronFrameBo().getCycleMinValueText())
+                        .setPageLimitValue(this.getPageLimitValue()));
 
         if (this.getCronFrameBo().getDesignButton() != null) {
             this.getCronFrameBo().getDesignButton()
@@ -291,11 +283,13 @@ public abstract class CronPageStructure {
         this.getCronFrameBo().getTimingPeriodMinValueText().getDocument()
                 .addDocumentListener(new TextFieldDocumentListener(getExpressionBo(), this.getCronFrameBo().getTimingPeriodButton()
                         , ExpressionBo.BACKSLASH, getExpressionBo().getSecondTextField()
-                        , this.getCronFrameBo().getTimingPeriodMinValueText(), this.getCronFrameBo().getTimingPeriodMaxValueText()));
+                        , this.getCronFrameBo().getTimingPeriodMinValueText(), this.getCronFrameBo().getTimingPeriodMaxValueText())
+                        .setPageLimitValue(this.getPageLimitValue()));
         this.getCronFrameBo().getTimingPeriodMaxValueText().getDocument()
                 .addDocumentListener(new TextFieldDocumentListener(getExpressionBo(), this.getCronFrameBo().getTimingPeriodButton()
                         , ExpressionBo.BACKSLASH, getExpressionBo().getSecondTextField()
-                        , this.getCronFrameBo().getTimingPeriodMaxValueText(), this.getCronFrameBo().getTimingPeriodMinValueText()));
+                        , this.getCronFrameBo().getTimingPeriodMaxValueText(), this.getCronFrameBo().getTimingPeriodMinValueText())
+                        .setPageLimitValue(this.getPageLimitValue()));
 
         // day页面
         if (this.getCronFrameBo().getMonthLastWeekDayButton() != null) {
@@ -317,7 +311,8 @@ public abstract class CronPageStructure {
             this.getCronFrameBo().getMonthLastWeekDayValue().getDocument().addDocumentListener(
                     new TextFieldDocumentListener(getExpressionBo(), this.getCronFrameBo().getMonthLastWeekDayButton()
                             , "W", getExpressionBo().getDayTextField()
-                            , this.getCronFrameBo().getMonthLastWeekDayValue(), null));
+                            , this.getCronFrameBo().getMonthLastWeekDayValue(), null)
+                            .setPageLimitValue(this.getPageLimitValue()));
         }
 
         // week页面
@@ -340,10 +335,18 @@ public abstract class CronPageStructure {
             this.getCronFrameBo().getMonthLastWeekDayValue().getDocument()
                     .addDocumentListener(new TextFieldDocumentListener(getExpressionBo(), this.getCronFrameBo().getMonthLastWeekButton()
                             , "L", getExpressionBo().getWeekTextField()
-                            , this.getCronFrameBo().getMonthLastWeekDayValue(), null));
+                            , this.getCronFrameBo().getMonthLastWeekDayValue(), null)
+                            .setPageLimitValue(this.getPageLimitValue()));
         }
-
+        return this;
     }
+
+    /**
+     * 设置各自的监听事件设置方法
+     *
+     * @return
+     */
+    abstract CronPageStructure setButtonAndTextFieldListener();
 
     /**
      * 规则判断

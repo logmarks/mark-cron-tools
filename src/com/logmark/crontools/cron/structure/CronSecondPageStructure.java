@@ -3,8 +3,10 @@ package com.logmark.crontools.cron.structure;
 import com.logmark.crontools.comm.listener.DesignCheckBoxActionListener;
 import com.logmark.crontools.comm.utils.*;
 import com.logmark.crontools.cron.bo.ExpressionBo;
+import com.logmark.crontools.cron.bo.PageLimitValue;
 import com.logmark.crontools.cron.bo.page.CronFrameBo;
 import com.logmark.crontools.cron.enums.DateUnitEnum;
+import com.logmark.crontools.cron.page.tabs.NavMenuPanel;
 
 import javax.swing.*;
 
@@ -23,7 +25,12 @@ public class CronSecondPageStructure extends CronPageStructure {
     public CronSecondPageStructure() {
     }
 
-    // ------------------------------------------- 构造函数 get/set结束线--------------------------------
+    public CronSecondPageStructure(DateUnitEnum unit, ExpressionBo expressionBo
+            , CardLayout cardLayout, JPanel cardsTopForm) {
+        super(unit, expressionBo, cardLayout, cardsTopForm);
+    }
+
+// ------------------------------------------- 构造函数 get/set结束线--------------------------------
 
     @Override
     public String checkExpression(String expressionChar) {
@@ -32,7 +39,7 @@ public class CronSecondPageStructure extends CronPageStructure {
     }
 
     @Override
-    public JPanel getTopForm() {
+    public JPanel getTopForm(DateUnitEnum page) {
         // 表达式之上 上部分
         JPanel expressionTopForm = new JPanel();
         expressionTopForm.setLayout(GridLayoutUtils.TWO_ROWS_ONE_COLUMNS);
@@ -40,7 +47,7 @@ public class CronSecondPageStructure extends CronPageStructure {
         JPanel expressionTopFormOptions = new JPanel();
         expressionTopFormOptions.setLayout(GridLayoutUtils.FIVE_ROWS_ONE_COLUMNS);
         // 窗体选项栏
-        expressionTopFormOptions.add(this.getOptions(DateUnitEnum.SECOND));
+        expressionTopFormOptions.add(new NavMenuPanel(super.getCardLayout(), super.getCardsTopForm(), page));
 
         // 窗体选择栏
         ButtonGroup buttonGroup = new ButtonGroup();
@@ -126,5 +133,15 @@ public class CronSecondPageStructure extends CronPageStructure {
         cronFrameBo.getTimingPeriodMaxValueText().addKeyListener(new ControlTheInputUtils());
 
         return cronFrameBo;
+    }
+
+    @Override
+    CronPageStructure setButtonAndTextFieldListener() {
+        ExpressionBo expressionBo = super.getExpressionBo();
+        expressionBo.setCurrentUnitMinValue(0).setCurrentUnitMaxValue(60);
+        super.setExpressionBo(expressionBo);
+        super.setPageLimitValue(new PageLimitValue(0, 60));
+        super.setButtonAndTextFieldListener(expressionBo.getSecondTextField());
+        return this;
     }
 }

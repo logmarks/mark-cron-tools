@@ -6,6 +6,7 @@ import com.logmark.crontools.comm.utils.MyTextField;
 import com.logmark.crontools.comm.utils.StringUtil;
 import com.logmark.crontools.cron.CronDialog;
 import com.logmark.crontools.cron.bo.ExpressionBo;
+import com.logmark.crontools.cron.bo.PageLimitValue;
 import com.logmark.crontools.cron.enums.DateUnitEnum;
 import com.logmark.crontools.cron.structure.CronPageStructure;
 
@@ -31,6 +32,7 @@ public class TextFieldDocumentListener implements DocumentListener {
     private String expressionRule;
     private ExpressionBo expressionBo;
     private JRadioButton button;
+    private PageLimitValue pageLimitValue;
 
     public TextFieldDocumentListener() {
     }
@@ -44,6 +46,18 @@ public class TextFieldDocumentListener implements DocumentListener {
         this.expressionRule = expressionRule;
         this.expressionBo = expressionBo;
         this.button = button;
+    }
+
+    public TextFieldDocumentListener(ExpressionBo expressionBo, JRadioButton button, String expressionRule
+            , JTextField expressionTextField, MyTextField currentTextField
+            , MyTextField otherTextField, PageLimitValue pageLimitValue) {
+        this(expressionBo, button, expressionRule, expressionTextField, currentTextField, otherTextField);
+        this.pageLimitValue = pageLimitValue;
+    }
+
+    public TextFieldDocumentListener setPageLimitValue(PageLimitValue pageLimitValue) {
+        this.pageLimitValue = pageLimitValue;
+        return this;
     }
 
     @Override
@@ -99,33 +113,38 @@ public class TextFieldDocumentListener implements DocumentListener {
         // 输入框数据值处理  结果数据显示
         switch (currentTextField.getId()) {
             case ComponentIdUtils.CYCLE_MIN_VALUE_TEXT_ID:
+                checkParams(StringUtil.isBlank(text), "周期开始值不能为空！");
                 checkParams(Integer.valueOf(text).compareTo(Integer.parseInt(otherTextField.getText())) >= 0, "周期开始值必须小于结束值！");
-                checkParams(Integer.valueOf(text).compareTo(expressionBo.getCurrentUnitMinValue()) <= 0
-                        , "周期开始值必须大于" + expressionBo.getCurrentUnitMinValue() + "！");
+                checkParams(Integer.valueOf(text).compareTo(pageLimitValue.getCurrentUnitMinValue()) <= 0
+                        , "周期开始值必须大于" + pageLimitValue.getCurrentUnitMinValue() + "！");
                 this.expressionTextField.setText(text + expressionRule + otherTextField.getText());
                 break;
             case ComponentIdUtils.CYCLE_MAX_VALUE_TEXT_ID:
+                checkParams(StringUtil.isBlank(text), "周期结束值不能为空！");
                 checkParams(Integer.valueOf(text).compareTo(Integer.parseInt(otherTextField.getText())) <= 0, "周期结束值必须大于开始值！");
-                checkParams(Integer.valueOf(text).compareTo(expressionBo.getCurrentUnitMaxValue()) >= 0
-                        , "周期结束值必须小于" + expressionBo.getCurrentUnitMaxValue() + "！");
+                checkParams(Integer.valueOf(text).compareTo(pageLimitValue.getCurrentUnitMaxValue()) >= 0
+                        , "周期结束值必须小于" + pageLimitValue.getCurrentUnitMaxValue() + "！");
                 this.expressionTextField.setText(otherTextField.getText() + expressionRule + text);
                 break;
             case ComponentIdUtils.TIMING_PERIOD_MIN_VALUE_TEXT_ID:
-                checkParams(Integer.valueOf(text).compareTo(expressionBo.getCurrentUnitMaxValue()) >= 0
-                        , "指定时间循环的指定时间值必须小于" + expressionBo.getCurrentUnitMaxValue() + "！");
-                checkParams(Integer.valueOf(text).compareTo(expressionBo.getCurrentUnitMinValue()) < 0
-                        , "指定时间循环的指定时间值必须不小于" + expressionBo.getCurrentUnitMinValue() + "！");
+                checkParams(StringUtil.isBlank(text), "指定时间循环的指定时间值不能为空！");
+                checkParams(Integer.valueOf(text).compareTo(pageLimitValue.getCurrentUnitMaxValue()) >= 0
+                        , "指定时间循环的指定时间值必须小于" + pageLimitValue.getCurrentUnitMaxValue() + "！");
+                checkParams(Integer.valueOf(text).compareTo(pageLimitValue.getCurrentUnitMinValue()) < 0
+                        , "指定时间循环的指定时间值必须不小于" + pageLimitValue.getCurrentUnitMinValue() + "！");
                 this.expressionTextField.setText(text + expressionRule + otherTextField.getText());
                 break;
             case ComponentIdUtils.TIMING_PERIOD_MAX_VALUE_TEXT_ID:
-                checkParams(Integer.valueOf(text).compareTo(expressionBo.getCurrentUnitMaxValue()) >= 0
-                        , "指定时间循环的循环值必须小于" + expressionBo.getCurrentUnitMaxValue() + "！");
-                checkParams(Integer.valueOf(text).compareTo(expressionBo.getCurrentUnitMinValue()) < 0
-                        , "指定时间循环的循环值必须不小于" + expressionBo.getCurrentUnitMinValue() + "！");
+                checkParams(StringUtil.isBlank(text), "指定时间循环的循环值不能为空！");
+                checkParams(Integer.valueOf(text).compareTo(pageLimitValue.getCurrentUnitMaxValue()) >= 0
+                        , "指定时间循环的循环值必须小于" + pageLimitValue.getCurrentUnitMaxValue() + "！");
+                checkParams(Integer.valueOf(text).compareTo(pageLimitValue.getCurrentUnitMinValue()) < 0
+                        , "指定时间循环的循环值必须不小于" + pageLimitValue.getCurrentUnitMinValue() + "！");
                 this.expressionTextField.setText(otherTextField.getText() + expressionRule + text);
                 break;
             case ComponentIdUtils.MONTH_LAST_WEEK_DAY_VALUE_ID:
                 //本月的最后一天
+                checkParams(StringUtil.isBlank(text), "号数不能为空！");
                 LocalDate localDate = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
                 int maxDayVal = localDate.getDayOfMonth();
                 checkParams(Integer.valueOf(text).compareTo(maxDayVal) > 0, "得到 每月 '' 号最近的那个工作日的Cron表达式，其号数必须不大于本月最后一天号数！");
@@ -134,10 +153,11 @@ public class TextFieldDocumentListener implements DocumentListener {
                 break;
             case ComponentIdUtils.MONTH_LAST_WEEK_VALUE_ID:
                 //本月的最后一个星期
-                checkParams(Integer.valueOf(text).compareTo(expressionBo.getCurrentUnitMaxValue()) > 0
-                        , "得到 本月的最后一个星期几 的Cron表达式，其星期数必须不大于" + expressionBo.getCurrentUnitMaxValue() + "！");
-                checkParams(Integer.valueOf(text).compareTo(expressionBo.getCurrentUnitMinValue()) < 0
-                        , "得到 本月的最后一个星期几 的Cron表达式，其星期数必须大于等于！" + expressionBo.getCurrentUnitMinValue() + "！");
+                checkParams(StringUtil.isBlank(text), "得到 本月的最后一个星期几 的Cron表达式，其星期数不能为空！");
+                checkParams(Integer.valueOf(text).compareTo(pageLimitValue.getCurrentUnitMaxValue()) > 0
+                        , "得到 本月的最后一个星期几 的Cron表达式，其星期数必须不大于" + pageLimitValue.getCurrentUnitMaxValue() + "！");
+                checkParams(Integer.valueOf(text).compareTo(pageLimitValue.getCurrentUnitMinValue()) < 0
+                        , "得到 本月的最后一个星期几 的Cron表达式，其星期数必须大于等于！" + pageLimitValue.getCurrentUnitMinValue() + "！");
                 this.expressionTextField.setText(text + expressionRule);
                 break;
             default:

@@ -3,8 +3,11 @@ package com.logmark.crontools.cron.structure;
 
 import com.logmark.crontools.comm.listener.DesignCheckBoxActionListener;
 import com.logmark.crontools.comm.utils.*;
+import com.logmark.crontools.cron.bo.ExpressionBo;
+import com.logmark.crontools.cron.bo.PageLimitValue;
 import com.logmark.crontools.cron.bo.page.CronFrameBo;
 import com.logmark.crontools.cron.enums.DateUnitEnum;
+import com.logmark.crontools.cron.page.tabs.NavMenuPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,6 +27,11 @@ public class CronHourPageStructure extends CronPageStructure {
 
     }
 
+    public CronHourPageStructure(DateUnitEnum unit, ExpressionBo expressionBo
+            , CardLayout cardLayout, JPanel cardsTopForm) {
+        super(unit, expressionBo, cardLayout, cardsTopForm);
+    }
+
     // ------------------------------------------- 构造函数 get/set结束线--------------------------------
 
     @Override
@@ -32,12 +40,12 @@ public class CronHourPageStructure extends CronPageStructure {
     }
 
     @Override
-    public JPanel getTopForm() {
+    public JPanel getTopForm(DateUnitEnum page) {
 
         JPanel expressionTopForm = new JPanel();
         expressionTopForm.setLayout(GridLayoutUtils.SEVEN_ROWS_ONE_COLUMNS);
         // 窗体选项栏
-        expressionTopForm.add(this.getOptions(DateUnitEnum.HOUR));
+        expressionTopForm.add(new NavMenuPanel(super.getCardLayout(), super.getCardsTopForm(), page));
 
         // 窗体选择栏
         ButtonGroup buttonGroup = new ButtonGroup();
@@ -139,5 +147,15 @@ public class CronHourPageStructure extends CronPageStructure {
         cronFrameBo.getTimingPeriodMaxValueText().addKeyListener(new ControlTheInputUtils());
 
         return cronFrameBo;
+    }
+
+    @Override
+    CronPageStructure setButtonAndTextFieldListener() {
+        ExpressionBo expressionBo = super.getExpressionBo();
+        expressionBo.setCurrentUnitMinValue(0).setCurrentUnitMaxValue(23);
+        super.setExpressionBo(expressionBo);
+        super.setPageLimitValue(new PageLimitValue(0, 23));
+        super.setButtonAndTextFieldListener(expressionBo.getHourTextField());
+        return this;
     }
 }
