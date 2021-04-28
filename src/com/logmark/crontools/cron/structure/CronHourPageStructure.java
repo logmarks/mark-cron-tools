@@ -39,8 +39,7 @@ public class CronHourPageStructure extends CronPageStructure {
         return null;
     }
 
-    @Override
-    public JPanel getTopForm(DateUnitEnum page) {
+    public JPanel getExpressionTopForm(DateUnitEnum page) {
 
         JPanel expressionTopForm = new JPanel();
         expressionTopForm.setLayout(GridLayoutUtils.SEVEN_ROWS_ONE_COLUMNS);
@@ -92,7 +91,7 @@ public class CronHourPageStructure extends CronPageStructure {
         expressionTopFormGrid.setLayout(GridLayoutUtils.ONE_ROWS_THIRTEEN_COLUMNS);
         JLabel amLabel = new JLabel("AM: ");
         expressionTopFormGrid.add(amLabel);
-        for (int i = this.getExpressionBo().getCurrentUnitMinValue(); i <= this.getExpressionBo().getCurrentUnitMaxValue() / 2; i++) {
+        for (int i = this.getPageLimitValue().getCurrentUnitMinValue(); i <= this.getPageLimitValue().getCurrentUnitMaxValue() / 2; i++) {
             JCheckBox jCheckBox = new JCheckBox(String.valueOf(i));
             jCheckBox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             DesignCheckBoxActionListener actionListener = new DesignCheckBoxActionListener()
@@ -108,7 +107,7 @@ public class CronHourPageStructure extends CronPageStructure {
         expressionTopFormGridPm.setLayout(GridLayoutUtils.ONE_ROWS_THIRTEEN_COLUMNS);
         JLabel pmLabel = new JLabel("PM: ");
         expressionTopFormGridPm.add(pmLabel);
-        for (int i = this.getExpressionBo().getCurrentUnitMaxValue() / 2 + 1; i <= this.getExpressionBo().getCurrentUnitMaxValue(); i++) {
+        for (int i = this.getPageLimitValue().getCurrentUnitMaxValue() / 2 + 1; i <= this.getPageLimitValue().getCurrentUnitMaxValue(); i++) {
             JCheckBox jCheckBox = new JCheckBox(String.valueOf(i));
             jCheckBox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             DesignCheckBoxActionListener actionListener = new DesignCheckBoxActionListener()
@@ -128,7 +127,6 @@ public class CronHourPageStructure extends CronPageStructure {
      *
      * @return
      */
-    @Override
     public CronFrameBo getCronFrame() {
         // 初始化 时上部分页面
         CronFrameBo cronFrameBo = new CronFrameBo();
@@ -150,12 +148,11 @@ public class CronHourPageStructure extends CronPageStructure {
     }
 
     @Override
-    CronPageStructure setButtonAndTextFieldListener() {
-        ExpressionBo expressionBo = super.getExpressionBo();
-        expressionBo.setCurrentUnitMinValue(0).setCurrentUnitMaxValue(23);
-        super.setExpressionBo(expressionBo);
+    CronPageStructure setLVAndCFBAndETFAndBTFL() {
+        super.setCronFrameBo(this.getCronFrame());
         super.setPageLimitValue(new PageLimitValue(0, 23));
-        super.setButtonAndTextFieldListener(expressionBo.getHourTextField());
+        super.setExpressionTopForm(this.getExpressionTopForm(super.getDateUnitEnum()));
+        super.setButtonAndTextFieldListener(super.getExpressionBo().getHourTextField());
         return this;
     }
 }

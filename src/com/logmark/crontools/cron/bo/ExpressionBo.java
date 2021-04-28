@@ -40,17 +40,6 @@ public class ExpressionBo {
 
     private JTextArea ninthRowTextArea;
 
-
-    /**
-     * 当前最小值
-     */
-    private Integer currentUnitMinValue = 0;
-
-    /**
-     * 当前最大值
-     */
-    private Integer currentUnitMaxValue = 59;
-
     public ExpressionBo() {
         this.secondTextField = ExpressionBo.getTextField("*", false);
         this.minuteTextField = ExpressionBo.getTextField("*", false);
@@ -168,31 +157,13 @@ public class ExpressionBo {
         return this;
     }
 
-    public Integer getCurrentUnitMinValue() {
-        return currentUnitMinValue;
-    }
-
-    public ExpressionBo setCurrentUnitMinValue(Integer currentUnitMinValue) {
-        this.currentUnitMinValue = currentUnitMinValue;
-        return this;
-    }
-
-    public Integer getCurrentUnitMaxValue() {
-        return currentUnitMaxValue;
-    }
-
-    public ExpressionBo setCurrentUnitMaxValue(Integer currentUnitMaxValue) {
-        this.currentUnitMaxValue = currentUnitMaxValue;
-        return this;
-    }
-
     // ------------------------------------------- 构造函数 get/set结束线--------------------------------
 
     /**
      * 生成cron表达式并显示在Cron 表达式框中
      */
     public ExpressionBo generateCronExpression() {
-        StringBuffer cronExpression = new StringBuffer();
+        StringBuilder cronExpression = new StringBuilder();
         cronExpression.append(this.getSecondTextField().getText()).append(" ")
                 .append(this.getMinuteTextField().getText()).append(" ")
                 .append(this.getHourTextField().getText()).append(" ")
@@ -251,7 +222,9 @@ public class ExpressionBo {
             }
 
         } catch (ParseException e) {
+            this.ninthRowTextArea.setText(e.getMessage());
             e.printStackTrace();
+            return this;
         }
         this.ninthRowTextArea.setText(result.toString());
         return this;

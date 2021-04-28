@@ -32,12 +32,10 @@ public class CronYearPageStructure extends CronPageStructure {
 
     @Override
     public String checkExpression(String expressionChar) {
-
         return null;
     }
 
-    @Override
-    public JPanel getTopForm(DateUnitEnum page) {
+    public JPanel getExpressionTopForm(DateUnitEnum page) {
         // 表达式之上 上部分
         JPanel expressionTopForm = new JPanel();
         expressionTopForm.setLayout(GridLayoutUtils.FIVE_ROWS_ONE_COLUMNS);
@@ -103,7 +101,6 @@ public class CronYearPageStructure extends CronPageStructure {
      *
      * @return
      */
-    @Override
     public CronFrameBo getCronFrame() {
         // 初始化 年上部分页面
         CronFrameBo cronFrameBo = new CronFrameBo();
@@ -120,12 +117,11 @@ public class CronYearPageStructure extends CronPageStructure {
     }
 
     @Override
-    CronPageStructure setButtonAndTextFieldListener() {
-        ExpressionBo expressionBo = super.getExpressionBo();
-        expressionBo.setCurrentUnitMinValue(2020).setCurrentUnitMaxValue(3000);
-        super.setExpressionBo(expressionBo);
+    CronPageStructure setLVAndCFBAndETFAndBTFL() {
+        super.setCronFrameBo(this.getCronFrame());
         super.setPageLimitValue(new PageLimitValue(2020, 3000));
-        super.setButtonAndTextFieldListener(expressionBo.getYearTextField());
+        super.setExpressionTopForm(this.getExpressionTopForm(super.getDateUnitEnum()));
+        super.setButtonAndTextFieldListener(super.getExpressionBo().getYearTextField());
         return this;
     }
 }

@@ -37,8 +37,7 @@ public class CronWeekPageStructure extends CronPageStructure {
         return null;
     }
 
-    @Override
-    public JPanel getTopForm(DateUnitEnum page) {
+    public JPanel getExpressionTopForm(DateUnitEnum page) {
         // 表达式之上 上部分
         JPanel expressionTopForm = new JPanel();
         expressionTopForm.setLayout(GridLayoutUtils.EIGHT_ROWS_ONE_COLUMNS);
@@ -111,7 +110,7 @@ public class CronWeekPageStructure extends CronPageStructure {
         // 指定时间网格
         JPanel expressionTopFormGridTop = new JPanel();
         expressionTopFormGridTop.setLayout(GridLayoutUtils.ONE_ROWS_SEVEN_COLUMNS);
-        for (int i = this.getExpressionBo().getCurrentUnitMinValue(); i <= this.getExpressionBo().getCurrentUnitMaxValue(); i++) {
+        for (int i = this.getPageLimitValue().getCurrentUnitMinValue(); i <= this.getPageLimitValue().getCurrentUnitMaxValue(); i++) {
             JCheckBox jCheckBox = new JCheckBox(String.valueOf(i));
             jCheckBox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             DesignCheckBoxActionListener actionListener = new DesignCheckBoxActionListener()
@@ -131,7 +130,6 @@ public class CronWeekPageStructure extends CronPageStructure {
      *
      * @return
      */
-    @Override
     public CronFrameBo getCronFrame() {
         // 初始化 日上部分页面
         CronFrameBo cronFrameBo = new CronFrameBo();
@@ -155,12 +153,11 @@ public class CronWeekPageStructure extends CronPageStructure {
     }
 
     @Override
-    CronPageStructure setButtonAndTextFieldListener() {
-        ExpressionBo expressionBo = super.getExpressionBo();
-        expressionBo.setCurrentUnitMinValue(0).setCurrentUnitMaxValue(7);
-        super.setExpressionBo(expressionBo);
+    CronPageStructure setLVAndCFBAndETFAndBTFL() {
+        super.setCronFrameBo(this.getCronFrame());
         super.setPageLimitValue(new PageLimitValue(0, 7));
-        super.setButtonAndTextFieldListener(expressionBo.getWeekTextField());
+        super.setExpressionTopForm(this.getExpressionTopForm(super.getDateUnitEnum()));
+        super.setButtonAndTextFieldListener(super.getExpressionBo().getWeekTextField());
         return this;
     }
 }

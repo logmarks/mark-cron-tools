@@ -37,8 +37,7 @@ public class CronMonthPageStructure extends CronPageStructure {
         return null;
     }
 
-    @Override
-    public JPanel getTopForm(DateUnitEnum page) {
+    public JPanel getExpressionTopForm(DateUnitEnum page) {
         // 表达式之上 上部分
         JPanel expressionTopForm = new JPanel();
         expressionTopForm.setLayout(GridLayoutUtils.SIX_ROWS_ONE_COLUMNS);
@@ -94,7 +93,7 @@ public class CronMonthPageStructure extends CronPageStructure {
         JPanel expressionTopFormGrid = new JPanel();
         expressionTopFormGrid.setLayout(GridLayoutUtils.ONE_ROWS_TWELVE_COLUMNS);
 
-        for (int i = this.getExpressionBo().getCurrentUnitMinValue(); i <= this.getExpressionBo().getCurrentUnitMaxValue(); i++) {
+        for (int i = this.getPageLimitValue().getCurrentUnitMinValue(); i <= this.getPageLimitValue().getCurrentUnitMaxValue(); i++) {
             JCheckBox jCheckBox = new JCheckBox(String.valueOf(i));
             jCheckBox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             DesignCheckBoxActionListener actionListener = new DesignCheckBoxActionListener()
@@ -114,7 +113,6 @@ public class CronMonthPageStructure extends CronPageStructure {
      *
      * @return
      */
-    @Override
     public CronFrameBo getCronFrame() {
         // 初始化 秒上部分页面
         CronFrameBo cronFrameBo = new CronFrameBo();
@@ -138,12 +136,11 @@ public class CronMonthPageStructure extends CronPageStructure {
     }
 
     @Override
-    CronPageStructure setButtonAndTextFieldListener() {
-        ExpressionBo expressionBo = super.getExpressionBo();
-        expressionBo.setCurrentUnitMinValue(0).setCurrentUnitMaxValue(12);
-        super.setExpressionBo(expressionBo);
+    CronPageStructure setLVAndCFBAndETFAndBTFL() {
+        super.setCronFrameBo(this.getCronFrame());
         super.setPageLimitValue(new PageLimitValue(0, 12));
-        super.setButtonAndTextFieldListener(expressionBo.getMonthTextField());
+        super.setExpressionTopForm(this.getExpressionTopForm(super.getDateUnitEnum()));
+        super.setButtonAndTextFieldListener(super.getExpressionBo().getMonthTextField());
         return this;
     }
 }

@@ -7,6 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @FileName: NavMenuPanel
@@ -57,47 +59,59 @@ public class NavMenuPanel extends JPanel {
      */
     JButton yearButton;
 
+    /**
+     * 所有button(为了设置背景色)
+     */
+    List<JButton> allButtonList = new ArrayList<>();
+
     public NavMenuPanel(CardLayout cardLayout, JPanel cardsTopForm, DateUnitEnum unitEnum) {
         this.cardLayout = cardLayout;
         this.cardsTopForm = cardsTopForm;
+
         secondButton = this.makeButton(DateUnitEnum.SECOND.getContent(), unitEnum);
         this.add(secondButton, optionsMenuLayout, 0);
+        this.allButtonList.add(secondButton);
+
         minuteButton = this.makeButton(DateUnitEnum.MINUTE.getContent(), unitEnum);
         this.add(minuteButton, optionsMenuLayout, 1);
+        this.allButtonList.add(minuteButton);
+
         hourButton = this.makeButton(DateUnitEnum.HOUR.getContent(), unitEnum);
         this.add(hourButton, optionsMenuLayout, 2);
+        this.allButtonList.add(hourButton);
+
         dayButton = this.makeButton(DateUnitEnum.DAY.getContent(), unitEnum);
         this.add(dayButton, optionsMenuLayout, 3);
+        this.allButtonList.add(dayButton);
+
         monthButton = this.makeButton(DateUnitEnum.MONTH.getContent(), unitEnum);
         this.add(monthButton, optionsMenuLayout, 4);
+        this.allButtonList.add(monthButton);
+
         weekButton = this.makeButton(DateUnitEnum.WEEK.getContent(), unitEnum);
         this.add(weekButton, optionsMenuLayout, 5);
+        this.allButtonList.add(weekButton);
+
         yearButton = this.makeButton(DateUnitEnum.YEAR.getContent(), unitEnum);
         this.add(yearButton, optionsMenuLayout, 6);
+        this.allButtonList.add(yearButton);
     }
 
     private JButton makeButton(String name, DateUnitEnum unitEnum) {
         JButton jButton = new JButton(name);
         jButton.setContentAreaFilled(true);
-        jButton.setBackground(unitEnum.getContent().equals(name) ? JBColor.LIGHT_GRAY : JBColor.WHITE);
+        jButton.setForeground(unitEnum.getContent().equals(name) ? JBColor.WHITE : JBColor.GRAY);
         jButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         // 对按钮添加鼠标活动
         final CardLayout layout = this.cardLayout;
         final JPanel topForm = this.cardsTopForm;
         jButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                jButton.setBackground(JBColor.LIGHT_GRAY);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                jButton.setBackground(JBColor.WHITE);
-            }
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                jButton.setBackground(JBColor.GRAY);
+                allButtonList.forEach((button)-> {
+                    button.setForeground(button.getText().equals(name) ? JBColor.WHITE : JBColor.GRAY);
+                });
                 DateUnitEnum unitEnum = DateUnitEnum.getByContent(jButton.getText());
                 layout.show(topForm, unitEnum.getValue());
             }

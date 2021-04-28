@@ -37,8 +37,7 @@ public class CronDayPageStructure extends CronPageStructure {
         return null;
     }
 
-    @Override
-    public JPanel getTopForm(DateUnitEnum page) {
+    public JPanel getExpressionTopForm(DateUnitEnum page) {
         // 表达式之上 上部分
         JPanel expressionTopForm = new JPanel();
         expressionTopForm.setLayout(GridLayoutUtils.TEN_ROWS_ONE_COLUMNS);
@@ -131,7 +130,7 @@ public class CronDayPageStructure extends CronPageStructure {
         // 指定时间网格
         JPanel expressionTopFormGridTop = new JPanel();
         expressionTopFormGridTop.setLayout(GridLayoutUtils.ONE_ROWS_SIXTEEN_COLUMNS);
-        for (int i = this.getExpressionBo().getCurrentUnitMinValue(); i <= this.getExpressionBo().getCurrentUnitMaxValue() / 2 + 1; i++) {
+        for (int i = this.getPageLimitValue().getCurrentUnitMinValue(); i <= this.getPageLimitValue().getCurrentUnitMaxValue() / 2 + 1; i++) {
             JCheckBox jCheckBox = new JCheckBox(String.valueOf(i));
             jCheckBox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             DesignCheckBoxActionListener actionListener = new DesignCheckBoxActionListener()
@@ -145,7 +144,7 @@ public class CronDayPageStructure extends CronPageStructure {
 
         JPanel expressionTopFormGridBottom = new JPanel();
         expressionTopFormGridBottom.setLayout(GridLayoutUtils.ONE_ROWS_SIXTEEN_COLUMNS);
-        for (int i = this.getExpressionBo().getCurrentUnitMaxValue() / 2 + 2; i <= this.getExpressionBo().getCurrentUnitMaxValue(); i++) {
+        for (int i = this.getPageLimitValue().getCurrentUnitMaxValue() / 2 + 2; i <= this.getPageLimitValue().getCurrentUnitMaxValue(); i++) {
             JCheckBox jCheckBox = new JCheckBox(String.valueOf(i));
             jCheckBox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             DesignCheckBoxActionListener actionListener = new DesignCheckBoxActionListener()
@@ -165,7 +164,6 @@ public class CronDayPageStructure extends CronPageStructure {
      *
      * @return
      */
-    @Override
     public CronFrameBo getCronFrame() {
         // 初始化 日上部分页面
         CronFrameBo cronFrameBo = new CronFrameBo();
@@ -189,12 +187,11 @@ public class CronDayPageStructure extends CronPageStructure {
     }
 
     @Override
-    CronPageStructure setButtonAndTextFieldListener() {
-        ExpressionBo expressionBo = super.getExpressionBo();
-        expressionBo.setCurrentUnitMinValue(0).setCurrentUnitMaxValue(31);
-        super.setExpressionBo(expressionBo);
+    CronPageStructure setLVAndCFBAndETFAndBTFL() {
+        super.setCronFrameBo(this.getCronFrame());
         super.setPageLimitValue(new PageLimitValue(0, 31));
-        super.setButtonAndTextFieldListener(expressionBo.getDayTextField());
+        super.setExpressionTopForm(this.getExpressionTopForm(super.getDateUnitEnum()));
+        super.setButtonAndTextFieldListener(super.getExpressionBo().getDayTextField());
         return this;
     }
 }
