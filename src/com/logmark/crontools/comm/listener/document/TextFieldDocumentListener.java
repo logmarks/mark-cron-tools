@@ -128,18 +128,18 @@ public class TextFieldDocumentListener implements DocumentListener {
                 break;
             case ComponentIdUtils.TIMING_PERIOD_MIN_VALUE_TEXT_ID:
                 checkParams(StringUtil.isBlank(text), "指定时间循环的指定时间值不能为空！");
-                checkParams(Integer.valueOf(text).compareTo(pageLimitValue.getCurrentUnitMaxValue()) >= 0
-                        , "指定时间循环的指定时间值必须小于" + pageLimitValue.getCurrentUnitMaxValue() + "！");
-                checkParams(Integer.valueOf(text).compareTo(pageLimitValue.getCurrentUnitMinValue()) < 0
-                        , "指定时间循环的指定时间值必须不小于" + pageLimitValue.getCurrentUnitMinValue() + "！");
+                checkParams(Integer.valueOf(text).compareTo(pageLimitValue.getCurrentTimingMaxValue()) >= 0
+                        , "指定时间循环的指定时间值必须小于" + pageLimitValue.getCurrentTimingMaxValue() + "！");
+                checkParams(Integer.valueOf(text).compareTo(pageLimitValue.getCurrentTimingMinValue()) < 0
+                        , "指定时间循环的指定时间值必须不小于" + pageLimitValue.getCurrentTimingMinValue() + "！");
                 this.expressionTextField.setText(text + expressionRule + otherTextField.getText());
                 break;
             case ComponentIdUtils.TIMING_PERIOD_MAX_VALUE_TEXT_ID:
                 checkParams(StringUtil.isBlank(text), "指定时间循环的循环值不能为空！");
-                checkParams(Integer.valueOf(text).compareTo(pageLimitValue.getCurrentUnitMaxValue()) >= 0
-                        , "指定时间循环的循环值必须小于" + pageLimitValue.getCurrentUnitMaxValue() + "！");
-                checkParams(Integer.valueOf(text).compareTo(pageLimitValue.getCurrentUnitMinValue()) < 0
-                        , "指定时间循环的循环值必须不小于" + pageLimitValue.getCurrentUnitMinValue() + "！");
+//                checkParams(Integer.valueOf(text).compareTo(pageLimitValue.getCurrentUnitMaxValue()) >= 0
+//                        , "指定时间循环的循环值必须小于" + pageLimitValue.getCurrentUnitMaxValue() + "！");
+//                checkParams(Integer.valueOf(text).compareTo(pageLimitValue.getCurrentUnitMinValue()) < 0
+//                        , "指定时间循环的循环值必须不小于" + pageLimitValue.getCurrentUnitMinValue() + "！");
                 this.expressionTextField.setText(otherTextField.getText() + expressionRule + text);
                 break;
             case ComponentIdUtils.MONTH_LAST_WEEK_DAY_VALUE_ID:

@@ -19,6 +19,16 @@ public class PageLimitValue {
      */
     private Integer currentUnitMaxValue = 59;
 
+    /**
+     * 当前最小值
+     */
+    private Integer currentTimingMinValue = 0;
+
+    /**
+     * 当前最大值
+     */
+    private Integer currentTimingMaxValue = 3000;
+
     public PageLimitValue() {
     }
 
@@ -42,6 +52,24 @@ public class PageLimitValue {
 
     public PageLimitValue setCurrentUnitMaxValue(Integer currentUnitMaxValue) {
         this.currentUnitMaxValue = currentUnitMaxValue;
+        return this;
+    }
+
+    public Integer getCurrentTimingMinValue() {
+        return currentTimingMinValue;
+    }
+
+    public PageLimitValue setCurrentTimingMinValue(Integer currentTimingMinValue) {
+        this.currentTimingMinValue = currentTimingMinValue;
+        return this;
+    }
+
+    public Integer getCurrentTimingMaxValue() {
+        return currentTimingMaxValue;
+    }
+
+    public PageLimitValue setCurrentTimingMaxValue(Integer currentTimingMaxValue) {
+        this.currentTimingMaxValue = currentTimingMaxValue;
         return this;
     }
 }

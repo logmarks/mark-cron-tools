@@ -105,11 +105,11 @@ public class CronYearPageStructure extends CronPageStructure {
         // 初始化 年上部分页面
         CronFrameBo cronFrameBo = new CronFrameBo();
         cronFrameBo.setCycleButton(new JRadioButton("周期 从"))
-                .setCycleMinValueText(new MyTextField("2020", ComponentIdUtils.YEAR_CYCLE_PERIOD_MIN_VALUE_TEXT_ID))
-                .setCycleMaxValueText(new MyTextField("3000", ComponentIdUtils.YEAR_CYCLE_PERIOD_MAX_VALUE_TEXT_ID))
+                .setCycleMinValueText(new MyTextField("2020", ComponentIdUtils.CYCLE_MIN_VALUE_TEXT_ID))
+                .setCycleMaxValueText(new MyTextField("3000", ComponentIdUtils.CYCLE_MAX_VALUE_TEXT_ID))
                 .setTimingPeriodButton(new JRadioButton("从"))
-                .setTimingPeriodMinValueText(new MyTextField("2020", ComponentIdUtils.YEAR_TIMING_PERIOD_MIN_VALUE_TEXT_ID))
-                .setTimingPeriodMaxValueText(new MyTextField("1", ComponentIdUtils.YEAR_TIMING_PERIOD_MAX_VALUE_TEXT_ID));
+                .setTimingPeriodMinValueText(new MyTextField("2020", ComponentIdUtils.TIMING_PERIOD_MIN_VALUE_TEXT_ID))
+                .setTimingPeriodMaxValueText(new MyTextField("1", ComponentIdUtils.TIMING_PERIOD_MAX_VALUE_TEXT_ID));
         cronFrameBo.getTimingPeriodMinValueText().addKeyListener(new ControlTheInputUtils());
         cronFrameBo.getTimingPeriodMaxValueText().addKeyListener(new ControlTheInputUtils());
 

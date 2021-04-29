@@ -68,7 +68,7 @@ public class CronWeekPageStructure extends CronPageStructure {
                 return;
             }
             getExpressionBo().setWeekTextField("?");
-            if (ExpressionBo.QUESTION_MARK.equals(getExpressionBo().getWeekTextField().getText())) {
+            if (ExpressionBo.QUESTION_MARK.equals(getExpressionBo().getDayTextField().getText())) {
                 getExpressionBo().setNinthRowTextArea("'？' 日或星期（周）中，只能有一个使用！");
                 return;
             }
