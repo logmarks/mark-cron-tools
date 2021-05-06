@@ -30,7 +30,7 @@ public class CronSecondPageStructure extends CronPageStructure {
         super(unit, expressionBo, cardLayout, cardsTopForm);
     }
 
-// ------------------------------------------- 构造函数 get/set结束线--------------------------------
+    // ---------------------------- get/set分割线 ------------------------------
 
     @Override
     public String checkExpression(String expressionChar) {

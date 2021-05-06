@@ -207,6 +207,8 @@ public abstract class CronPageStructure {
         return null;
     }
 
+    // ---------------------------- get/set分割线 ------------------------------
+
     public DateUnitEnum getDateUnitEnum() {
         return dateUnitEnum;
     }
