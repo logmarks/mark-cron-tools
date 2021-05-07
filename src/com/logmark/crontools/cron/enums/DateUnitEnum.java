@@ -13,31 +13,37 @@ public enum DateUnitEnum implements ContentEnum {
     /**
      * 枚举 秒
      */
-    SECOND("秒", "second")
+    SECOND("秒", "second"),
+
     /**
      * 枚举 分钟
      */
-    , MINUTE("分钟", "minute")
+    MINUTE("分钟", "minute"),
+
     /**
      * 枚举 时
      */
-    , HOUR("小时", "hour")
+    HOUR("小时", "hour"),
+
     /**
      * 枚举 日
      */
-    , DAY("日", "day")
+    DAY("日", "day"),
+
     /**
      * 枚举 月
      */
-    , MONTH("月", "month")
+    MONTH("月", "month"),
+
     /**
      * 枚举 周
      */
-    , WEEK("周", "week")
+    WEEK("周", "week"),
+
     /**
      * 枚举 年
      */
-    , YEAR("年", "year");
+    YEAR("年", "year");
 
     private String content;
     private String value;
